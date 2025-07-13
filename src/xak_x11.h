@@ -2,6 +2,7 @@
 #define XAK_X11_H
 
 int xak_x11_init(void);
+void xak_x11_handle(void);
 void xak_x11_close(void);
 
 #endif

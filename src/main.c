@@ -4,6 +4,8 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
+#include <poll.h>
+#include <linux/input.h>
 
 #include "xak_x11.h"
 #include "xak_input.h"
@@ -60,7 +62,34 @@ int main(void)
 
     printf("ok - input device fd=%d\n", input);
 
-    sleep(10);
+    // setup pollfds
+    struct pollfd fds[2];
+    fds[0].fd = x;
+    fds[0].events = POLLIN;
+
+    fds[1].fd = input;
+    fds[1].events = POLLIN;
+
+    // poll
+    for(;;) {
+        if (poll(fds, 2, -1) == -1) {
+            perror("poll");
+            xak_x11_close();
+            xak_input_close();
+            return 1;
+        }
+
+        if (fds[0].revents & POLLIN) {
+            xak_x11_handle();
+            printf("x11 event\n");
+        }
+
+        if (fds[1].revents & POLLIN) {
+            struct input_event ev;
+            read(input, &ev, sizeof(ev));
+            printf("input event\n");
+        }
+    }
 
     xak_x11_close();
     xak_input_close();

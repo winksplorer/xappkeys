@@ -11,6 +11,8 @@
 static Display* dpy;
 static Atom NET_ACTIVE;
 static Atom UTF8_STRING;
+static Window last;
+static Window root;
 
 static void xak_x11_get_class(Display* dpy, Window win, char* buf, unsigned long n)
 {
@@ -56,21 +58,19 @@ int xak_x11_init(void) {
     }
 
     int screen    = DefaultScreen(dpy);
-    Window root   = RootWindow(dpy, screen);
+    root   = RootWindow(dpy, screen);
     NET_ACTIVE    = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
     UTF8_STRING   = XInternAtom(dpy, "UTF8_STRING", False); // not strictly needed
 
     // listen for property changes on root
     XSelectInput(dpy, root, PropertyChangeMask);
+    XFlush(dpy);
 
     return ConnectionNumber(dpy);
+}
 
-    #if 0
-    // print current active window once at start
-    Window last = xak_x11_get_active(dpy, root);
-    // if (last) print_class(dpy, last);
-
-    for (;;) {
+void xak_x11_handle(void) {
+    while (XPending(dpy)) {
         XEvent ev;
         XNextEvent(dpy, &ev);
         if (ev.type == PropertyNotify &&
@@ -79,12 +79,10 @@ int xak_x11_init(void) {
             if (w && w != last) {
                 last = w;
                 // print_class(dpy, w);
+                printf("new window focused\n");
             }
         }
     }
-
-    XCloseDisplay(dpy);
-    #endif
 }
 
 void xak_x11_close(void) {
