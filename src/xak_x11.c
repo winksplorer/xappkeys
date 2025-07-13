@@ -1,11 +1,11 @@
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
-#include <stdbool.h>
 
 #include "xak_x11.h"
 
@@ -14,6 +14,8 @@ static Atom NET_ACTIVE;
 static Atom UTF8_STRING;
 static Window focused;
 static Window root;
+
+static int x_fd;
 
 // gets the active window
 static Window xak_x11_get_active(void)
@@ -71,7 +73,8 @@ int xak_x11_init(void) {
     // get the currently active window
     focused = xak_x11_get_active();
 
-    return ConnectionNumber(dpy);
+    x_fd = ConnectionNumber(dpy);
+    return x_fd;
 }
 
 // handles x11 focus change events
@@ -90,7 +93,7 @@ int xak_x11_handle(void) {
             }
         }
     }
-    
+
     return changed;
 }
 
@@ -99,5 +102,11 @@ void xak_x11_close(void) {
     if (dpy) {
         XCloseDisplay(dpy);
         dpy = NULL;
+        x_fd = -1;
     }
+}
+
+// uninits x11 (for child use only)
+void xak_x11_child_close(void) {
+    if (x_fd != -1) close(x_fd);
 }

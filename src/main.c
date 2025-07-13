@@ -40,19 +40,13 @@ int main(void)
 
     printf("ok - input device fd=%d\n", input);
 
-    // array for currently active binds
+    // setup vars
     KeyBinding active_binds[256];
-    int num_active_binds = window_binds[0].num_bindings,
-        num_global_binds = window_binds[0].num_bindings;
+    int num_active_binds = window_binds[0].num_bindings, // the total amount of binds that work rn
+        num_global_binds = window_binds[0].num_bindings; // how many active binds are NOT window-specific
 
-    for(int i = 0; i < num_global_binds; ++i) {
-        active_binds[i] = window_binds[0].bindings[i];
-    }
-
-    printf("printing binds:\n");
-    for (int i = 0; i < num_active_binds; ++i) {
-        printf("%d: %s\n", active_binds[i].keycode, active_binds[i].argv[0]);
-    }
+    // copy global binds
+    for (int i = 0; i < num_global_binds; ++i) active_binds[i] = window_binds[0].bindings[i];
 
     // setup pollfds
     struct pollfd fds[2];
@@ -62,8 +56,9 @@ int main(void)
     fds[1].fd = input;
     fds[1].events = POLLIN;
 
-    // poll
-    for(;;) {
+    // main loop
+    for (;;) {
+        // poll info from either x11 or our input device
         if (poll(fds, 2, -1) == -1) {
             perror("poll");
             xak_x11_close();
@@ -71,40 +66,40 @@ int main(void)
             return 1;
         }
 
+        // x11 events
         if (fds[0].revents & POLLIN) {
-            if (xak_x11_handle()) {
-                char class[128];
-                xak_x11_get_focused_class(class, sizeof(class));
-                printf("------ focused window: %s\n", class);
-                fflush(stdout);
+            if (!xak_x11_handle()) continue;
 
-                num_active_binds = num_global_binds;
+            // what window are we in?
+            char class[128];
+            xak_x11_get_focused_class(class, sizeof(class));
 
-                for (unsigned long i = 1; i < ARR_SZ(window_binds); ++i) {
-                    const WindowBind* bind = &window_binds[i];
+            // forget all previous window-specific binds
+            num_active_binds = num_global_binds;
 
-                    if (bind->xclass && strcmp(bind->xclass, class) == 0) {
-                        for (int j = 0; j < bind->num_bindings; ++j) {
-                            active_binds[j + num_global_binds] = bind->bindings[j];
-                            num_active_binds++;
-                        }
+            // go through window binds, and check if the class matches ours
+            for (unsigned long i = 1; i < ARR_SZ(window_binds); ++i) {
+                const WindowBind* bind = &window_binds[i];
 
-                        break;
+                if (bind->xclass && strcmp(bind->xclass, class) == 0) {
+                    // copy bindings
+                    for (int j = 0; j < bind->num_bindings; ++j) {
+                        active_binds[j + num_global_binds] = bind->bindings[j];
+                        num_active_binds++;
                     }
-                }
 
-                printf("printing binds:\n");
-                for (int i = 0; i < num_active_binds; ++i) {
-                    printf("%d: %s\n", active_binds[i].keycode, active_binds[i].argv[0]);
+                    break;
                 }
             }
         }
 
+        // input events
         if (fds[1].revents & POLLIN) {
-            xak_input_handle();
+            xak_input_handle(active_binds, num_active_binds);
         }
     }
 
+    // exit
     xak_x11_close();
     xak_input_close();
     return 0;

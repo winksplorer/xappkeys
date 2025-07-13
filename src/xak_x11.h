@@ -8,5 +8,6 @@ void xak_x11_get_focused_class(char* buf, unsigned long n);
 int xak_x11_init(void);
 int xak_x11_handle(void);
 void xak_x11_close(void);
+void xak_x11_child_close(void);
 
 #endif
