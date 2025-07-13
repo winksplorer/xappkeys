@@ -29,7 +29,7 @@ typedef struct {
 // what device to read from
 #define XAK_INPUT_DEVICE_PATH "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"
 
-// launched application details
+// launched application details (not required if XAK_EXPECT_ROOT is 0)
 #define XAK_TARGET_GID 1000
 #define XAK_TARGET_UID 1000
 #define XAK_TARGET_USER "wink"

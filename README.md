@@ -6,7 +6,7 @@ App-specific macro keybinding tool for X11 with direct device interception
 
 ## Running without root
 
-`config.h` lets you specify XAK_EXPECT_ROOT, however it is HIGHLY recommended **not** to run as root.
+`config.h` lets you specify `XAK_EXPECT_ROOT`, however it is HIGHLY recommended **not** to run as root.
 
 But devices in `/dev/input/by-id` require root. Here's some quick instructions on how to change that:
 
