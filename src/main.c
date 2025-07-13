@@ -86,8 +86,15 @@ int main(void)
 
         if (fds[1].revents & POLLIN) {
             struct input_event ev;
-            read(input, &ev, sizeof(ev));
-            printf("input event\n");
+            ssize_t n = read(input, &ev, sizeof(ev));
+            if (n == (ssize_t)sizeof(ev)) {
+                if (ev.type == EV_KEY) {
+                    printf("Key %d %s\n", ev.code,
+                        ev.value == 1 ? "pressed" :
+                        ev.value == 0 ? "released" :
+                        ev.value == 2 ? "repeated" : "unknown");
+                }
+            }
         }
     }
 
