@@ -6,6 +6,8 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
+#include "xak_x11.h"
+
 static Display* dpy;
 static Atom NET_ACTIVE;
 static Atom UTF8_STRING;
@@ -50,7 +52,7 @@ int xak_x11_init(void) {
     dpy = XOpenDisplay(NULL);
     if (!dpy) {
         fprintf(stderr, "failed on XOpenDisplay\n");
-        return 0;
+        return -1;
     }
 
     int screen    = DefaultScreen(dpy);
