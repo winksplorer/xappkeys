@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <poll.h>
 #include <linux/input.h>
@@ -7,6 +8,7 @@
 #include "xak_input.h"
 #include "xak_signal.h"
 
+// entry point
 int main(void)
 {
     // setup signals
@@ -38,6 +40,20 @@ int main(void)
 
     printf("ok - input device fd=%d\n", input);
 
+    // array for currently active binds
+    KeyBinding active_binds[256];
+    int num_active_binds = window_binds[0].num_bindings,
+        num_global_binds = window_binds[0].num_bindings;
+
+    for(int i = 0; i < num_global_binds; ++i) {
+        active_binds[i] = window_binds[0].bindings[i];
+    }
+
+    printf("printing binds:\n");
+    for (int i = 0; i < num_active_binds; ++i) {
+        printf("%d: %s\n", active_binds[i].keycode, active_binds[i].argv[0]);
+    }
+
     // setup pollfds
     struct pollfd fds[2];
     fds[0].fd = x;
@@ -56,21 +72,36 @@ int main(void)
         }
 
         if (fds[0].revents & POLLIN) {
-            xak_x11_handle();
-            printf("x11 event\n");
+            if (xak_x11_handle()) {
+                char class[128];
+                xak_x11_get_focused_class(class, sizeof(class));
+                printf("------ focused window: %s\n", class);
+                fflush(stdout);
+
+                num_active_binds = num_global_binds;
+
+                for (unsigned long i = 1; i < ARR_SZ(window_binds); ++i) {
+                    const WindowBind* bind = &window_binds[i];
+
+                    if (bind->xclass && strcmp(bind->xclass, class) == 0) {
+                        for (int j = 0; j < bind->num_bindings; ++j) {
+                            active_binds[j + num_global_binds] = bind->bindings[j];
+                            num_active_binds++;
+                        }
+
+                        break;
+                    }
+                }
+
+                printf("printing binds:\n");
+                for (int i = 0; i < num_active_binds; ++i) {
+                    printf("%d: %s\n", active_binds[i].keycode, active_binds[i].argv[0]);
+                }
+            }
         }
 
         if (fds[1].revents & POLLIN) {
-            struct input_event ev;
-            ssize_t n = read(input, &ev, sizeof(ev));
-            if (n == (ssize_t)sizeof(ev)) {
-                if (ev.type == EV_KEY) {
-                    printf("Key %d %s\n", ev.code,
-                        ev.value == 1 ? "pressed" :
-                        ev.value == 0 ? "released" :
-                        ev.value == 2 ? "repeated" : "unknown");
-                }
-            }
+            xak_input_handle();
         }
     }
 

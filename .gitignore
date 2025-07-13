@@ -1,2 +1,3 @@
 xappkeys
 *.o
+.cache

@@ -1,0 +1,90 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-O2",
+      "-std=c99",
+      "-Isrc",
+      "-include",
+      "config.h",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-Wno-newline-eof",
+      "-fcolor-diagnostics",
+      "-c",
+      "-o",
+      "src/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/wink/repos/xappkeys",
+    "file": "/home/wink/repos/xappkeys/src/main.c",
+    "output": "/home/wink/repos/xappkeys/src/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-O2",
+      "-std=c99",
+      "-Isrc",
+      "-include",
+      "config.h",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-Wno-newline-eof",
+      "-fcolor-diagnostics",
+      "-c",
+      "-o",
+      "src/xak_x11.o",
+      "src/xak_x11.c"
+    ],
+    "directory": "/home/wink/repos/xappkeys",
+    "file": "/home/wink/repos/xappkeys/src/xak_x11.c",
+    "output": "/home/wink/repos/xappkeys/src/xak_x11.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-O2",
+      "-std=c99",
+      "-Isrc",
+      "-include",
+      "config.h",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-Wno-newline-eof",
+      "-fcolor-diagnostics",
+      "-c",
+      "-o",
+      "src/xak_input.o",
+      "src/xak_input.c"
+    ],
+    "directory": "/home/wink/repos/xappkeys",
+    "file": "/home/wink/repos/xappkeys/src/xak_input.c",
+    "output": "/home/wink/repos/xappkeys/src/xak_input.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-O2",
+      "-std=c99",
+      "-Isrc",
+      "-include",
+      "config.h",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "-Wno-newline-eof",
+      "-fcolor-diagnostics",
+      "-c",
+      "-o",
+      "src/xak_signal.o",
+      "src/xak_signal.c"
+    ],
+    "directory": "/home/wink/repos/xappkeys",
+    "file": "/home/wink/repos/xappkeys/src/xak_signal.c",
+    "output": "/home/wink/repos/xappkeys/src/xak_signal.o"
+  }
+]

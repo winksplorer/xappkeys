@@ -9,6 +9,7 @@
 #include "xak_input.h"
 #include "xak_x11.h"
 
+// handles signal events
 static void xak_signal_handle(int sig) {
     printf("caught %s\n", strsignal(sig));
     xak_x11_close();
@@ -16,6 +17,7 @@ static void xak_signal_handle(int sig) {
     _exit(0);
 }
 
+// sets up signal handler
 int xak_signal_init(void) {
     struct sigaction sa;
     sa.sa_handler = xak_signal_handle;

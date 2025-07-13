@@ -8,9 +8,9 @@
 
 static int input_fd = -1;
 
+// inits input code
 int xak_input_init(void) {
-    // todo: make this NOT hardcoded
-    input_fd = open("/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd", O_RDONLY | O_NONBLOCK);
+    input_fd = open(XAK_INPUT_DEVICE_PATH, O_RDONLY | O_NONBLOCK);
     if (input_fd == -1) {
         perror("open");
         return -1;
@@ -25,6 +25,23 @@ int xak_input_init(void) {
     return input_fd;
 }
 
+// handles input events
+int xak_input_handle(void) {
+    struct input_event ev;
+    ssize_t n = read(input_fd, &ev, sizeof(ev));
+    if (n == (ssize_t)sizeof(ev)) {
+        if (ev.type == EV_KEY) {
+            printf("Key %d %s\n", ev.code,
+                ev.value == 1 ? "pressed" :
+                ev.value == 0 ? "released" :
+                ev.value == 2 ? "repeated" : "unknown");
+        }
+    }
+
+    return 0;
+}
+
+// uninits input code
 void xak_input_close(void) {
     if (input_fd != -1) {
         if (ioctl(input_fd, EVIOCGRAB, 0) == -1) {
