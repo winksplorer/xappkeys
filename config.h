@@ -22,6 +22,8 @@ typedef struct {
 } WindowBind;
 // ------
 
+// note: this is my actual config
+
 // what device to read from
 #define XAK_INPUT_DEVICE_PATH "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"
 
@@ -33,13 +35,75 @@ typedef struct {
 
 // bindings that will be active across any window
 static const KeyBinding global_bindings[] = {
-    { KEY_ESC, KEY_PRESSED, (char*[]){ "/usr/bin/alacritty", "--hold", "-e", "/usr/bin/env", NULL } }
+    // dot = screensaver
+    { KEY_KPDOT, KEY_RELEASED, (char*[]){ "xscreensaver-command", "-activate", NULL } },
+
+    // 0 = alacritty
+    { KEY_KP0, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "alacritty", NULL } },
+
+    // 1 = apple music via weston
+    { KEY_KP1, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "weston", NULL } },
+
+    // 2 = codium
+    { KEY_KP2, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "codium", NULL } },
+
+    // 3 = vesktop
+    { KEY_KP3, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "vesktop", NULL } },
+
+    // 4 = steam
+    { KEY_KP4, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "steam", NULL } },
+
+    // 5 = thunar
+    { KEY_KP5, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "thunar", NULL } },
+
+    // 6 = qutebrowser
+    { KEY_KP6, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "qutebrowser", NULL } },
+
+    // 7 = chromium
+    { KEY_KP7, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "chromium", NULL } },
+
+    // 8 = freetube
+    { KEY_KP8, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "freetube", NULL } },
+
+    // 9 = vesktop + type ":sob:" + alt-tab
+    { KEY_KP9, KEY_PRESSED, (char*[]){ "/bin/sh", "-c", "/home/wink/Documents/wincycle.sh vesktop && xdotool type :sob: && xdotool sleep 0.1 key Return sleep 0.3 keydown Alt key Tab sleep 0.1 keyup Alt", NULL } },
 };
 
-// example: bindings for alacritty
+
+// bindings for vscodium
+static const KeyBinding vscodium_bindings[] = {
+    // enter = search by function
+    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "at", NULL } },
+
+    // plus = search by file
+    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", NULL } },
+
+    // minus = go to line
+    { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "colon", NULL } },
+};
+
+// bindings for alacritty
 static const KeyBinding alacritty_bindings[] = {
-    { KEY_KP1, KEY_PRESSED, (char*[]){ "/usr/bin/xdotool", "type", "hi", NULL } },
-    { KEY_KP2, KEY_PRESSED, (char*[]){ "/usr/bin/xdotool", "type", "hello", NULL } }
+    // enter = make clean && make
+    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type \"make clean && make\"; xdotool key Return", NULL } },
+
+    // plus = doas apt install
+    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "type", "doas apt install ", NULL } },
+
+    // minus = clear
+    { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type clear; xdotool key Return", NULL } },
+};
+
+// bindings for qutebrowser
+static const KeyBinding qutebrowser_bindings[] = {
+    // enter = open -t
+    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "xdotool", "key", "O", NULL } },
+
+    // plus = forward
+    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "L", NULL } },
+
+    // minus = back
+    { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "H", NULL } },
 };
 
 // list of bindings for each window class
@@ -47,7 +111,9 @@ static const KeyBinding alacritty_bindings[] = {
 // get the first argument by running xprop on your desired window and use the value of WM_CLASS(STRING)
 static const WindowBind window_binds[] = {
     { NULL, ARR_SZ(global_bindings), global_bindings }, // make sure this is first
-    { "Alacritty", ARR_SZ(alacritty_bindings), alacritty_bindings }
+    { "VSCodium", ARR_SZ(vscodium_bindings), vscodium_bindings },
+    { "Alacritty", ARR_SZ(alacritty_bindings), alacritty_bindings },
+    { "qutebrowser", ARR_SZ(qutebrowser_bindings), qutebrowser_bindings }
 };
 
 #endif
