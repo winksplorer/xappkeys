@@ -50,7 +50,7 @@ int xak_x11_init(void) {
     dpy = XOpenDisplay(NULL);
     if (!dpy) {
         fprintf(stderr, "failed on XOpenDisplay\n");
-        return -1;
+        return 0;
     }
 
     int screen    = DefaultScreen(dpy);
@@ -60,6 +60,8 @@ int xak_x11_init(void) {
 
     // listen for property changes on root
     XSelectInput(dpy, root, PropertyChangeMask);
+
+    return ConnectionNumber(dpy);
 
     #if 0
     // print current active window once at start
@@ -81,6 +83,11 @@ int xak_x11_init(void) {
 
     XCloseDisplay(dpy);
     #endif
+}
 
-    return 0;
+void xak_x11_close(void) {
+    if (dpy) {
+        XCloseDisplay(dpy);
+        dpy = NULL;
+    }
 }
