@@ -24,6 +24,8 @@ typedef struct {
 
 // note: this is my actual config
 
+#define XAK_EXPECT_ROOT 0 // HIGHLY recommended to not have root
+
 // what device to read from
 #define XAK_INPUT_DEVICE_PATH "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"
 

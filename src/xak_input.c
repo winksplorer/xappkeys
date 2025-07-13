@@ -56,6 +56,7 @@ int xak_input_handle(KeyBinding binds[], int num_binds) {
                 _exit(1);
             }
 
+            #if XAK_EXPECT_ROOT
             // drop privileges
             if (setgid(XAK_TARGET_GID) || setuid(XAK_TARGET_UID)) {
                 perror("setgid/setuid");
@@ -66,6 +67,8 @@ int xak_input_handle(KeyBinding binds[], int num_binds) {
             setenv("USER", XAK_TARGET_USER, 1);
             setenv("LOGNAME", XAK_TARGET_USER, 1);
             setenv("HOME", XAK_TARGET_HOME, 1);
+            #endif
+            
             xak_x11_child_close();
             xak_input_child_close();
 
