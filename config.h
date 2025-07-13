@@ -1,6 +1,8 @@
 #ifndef XAK_CONFIG_H
 #define XAK_CONFIG_H
 
+// note: this is my actual config
+
 // ------ do not touch
 #include <stddef.h>
 #include <linux/input-event-codes.h>
@@ -22,9 +24,8 @@ typedef struct {
 } WindowBind;
 // ------
 
-// note: this is my actual config
-
-#define XAK_EXPECT_ROOT 0 // HIGHLY recommended to not have root
+// HIGHLY recommended to not have root
+#define XAK_EXPECT_ROOT 0
 
 // what device to read from
 #define XAK_INPUT_DEVICE_PATH "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"

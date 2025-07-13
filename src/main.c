@@ -94,9 +94,8 @@ int main(void)
         }
 
         // input events
-        if (fds[1].revents & POLLIN) {
+        if (fds[1].revents & POLLIN)
             xak_input_handle(active_binds, num_active_binds);
-        }
     }
 
     // exit

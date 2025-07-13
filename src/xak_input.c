@@ -1,9 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/input.h>
+
+#if XAK_EXPECT_ROOT
+#include <stdlib.h>
+#endif
 
 #include "xak_input.h"
 #include "xak_x11.h"
@@ -68,7 +71,7 @@ int xak_input_handle(KeyBinding binds[], int num_binds) {
             setenv("LOGNAME", XAK_TARGET_USER, 1);
             setenv("HOME", XAK_TARGET_HOME, 1);
             #endif
-            
+
             xak_x11_child_close();
             xak_input_child_close();
 
