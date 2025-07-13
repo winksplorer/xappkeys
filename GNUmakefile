@@ -20,5 +20,4 @@ clean:
 	rm -f $(OBJECTS) $(OUT)
 
 install:
-	sudo cp ./$(OUT) /usr/bin
-	sudo chmod -w /usr/bin/$(OUT)
+	install -m 755 $(OUT) /usr/bin
