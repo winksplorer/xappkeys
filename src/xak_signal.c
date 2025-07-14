@@ -30,5 +30,16 @@ int xak_signal_init(void) {
         }
     }
 
+    // prevent zombie processes
+    struct sigaction sa_ignore;
+    sa_ignore.sa_handler = SIG_IGN;
+    sigemptyset(&sa_ignore.sa_mask);
+    sa_ignore.sa_flags = 0;
+
+    if (sigaction(SIGCHLD, &sa_ignore, NULL) == -1) {
+        perror("sigaction SIGCHLD");
+        return -1;
+    }
+
     return 0;
 }
