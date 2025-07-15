@@ -36,40 +36,47 @@ typedef struct {
 #define XAK_TARGET_USER "wink"
 #define XAK_TARGET_HOME "/home/wink"
 
+// custom macros, not required
+#define WINCYCLE(name) (char*[]){ "/home/wink/Documents/wincycle.sh", name, NULL }
+
 // bindings that will be active across any window
 static const KeyBinding global_bindings[] = {
     // dot = screensaver
     { KEY_KPDOT, KEY_RELEASED, (char*[]){ "xscreensaver-command", "-activate", NULL } },
 
     // 0 = alacritty
-    { KEY_KP0, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "alacritty", NULL } },
+    { KEY_KP0, KEY_PRESSED, WINCYCLE("alacritty") },
 
     // 1 = apple music via weston
-    { KEY_KP1, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "weston", NULL } },
+    { KEY_KP1, KEY_PRESSED, WINCYCLE("weston") },
 
     // 2 = codium
-    { KEY_KP2, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "codium", NULL } },
+    { KEY_KP2, KEY_PRESSED, WINCYCLE("codium") },
 
     // 3 = vesktop
-    { KEY_KP3, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "vesktop", NULL } },
+    { KEY_KP3, KEY_PRESSED, WINCYCLE("vesktop") },
 
     // 4 = steam
-    { KEY_KP4, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "steam", NULL } },
+    { KEY_KP4, KEY_PRESSED, WINCYCLE("steam") },
 
     // 5 = thunar
-    { KEY_KP5, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "thunar", NULL } },
+    { KEY_KP5, KEY_PRESSED, WINCYCLE("thunar") },
 
     // 6 = qutebrowser
-    { KEY_KP6, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "qutebrowser", NULL } },
+    { KEY_KP6, KEY_PRESSED, WINCYCLE("qutebrowser") },
 
     // 7 = chromium
-    { KEY_KP7, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "chromium", NULL } },
+    { KEY_KP7, KEY_PRESSED, WINCYCLE("chromium") },
 
     // 8 = freetube
-    { KEY_KP8, KEY_PRESSED, (char*[]){ "/home/wink/Documents/wincycle.sh", "freetube", NULL } },
+    { KEY_KP8, KEY_PRESSED, WINCYCLE("freetube") },
 
     // 9 = vesktop + type ":sob:" + alt-tab
-    { KEY_KP9, KEY_PRESSED, (char*[]){ "/bin/sh", "-c", "/home/wink/Documents/wincycle.sh vesktop && xdotool type :sob: && xdotool sleep 0.1 key Return sleep 0.3 keydown Alt key Tab sleep 0.1 keyup Alt", NULL } },
+    { KEY_KP9, KEY_PRESSED, (char*[]){ "/bin/sh", "-c", 
+        "/home/wink/Documents/wincycle.sh vesktop && " // switch to vesktop
+        "xdotool type :sob: && " // type sob
+        "xdotool sleep 0.1 key Return sleep 0.3 " // press enter and wait a bit
+        "keydown Alt key Tab sleep 0.1 keyup Alt", NULL } }, // alt+tab back
 };
 
 
