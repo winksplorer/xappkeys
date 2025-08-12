@@ -37,7 +37,7 @@ typedef struct {
 #define XAK_TARGET_HOME "/home/wink"
 
 // custom macros, not required
-#define WINCYCLE(name) (char*[]){ "/home/wink/Documents/wincycle.sh", name, NULL }
+#define WINCYCLE(name) (char*[]){ "wincycle", name, NULL }
 
 // bindings that will be active across any window
 static const KeyBinding global_bindings[] = {
@@ -73,7 +73,7 @@ static const KeyBinding global_bindings[] = {
 
     // 9 = vesktop + type ":sob:" + alt-tab
     { KEY_KP9, KEY_PRESSED, (char*[]){ "/bin/sh", "-c", 
-        "/home/wink/Documents/wincycle.sh vesktop && " // switch to vesktop
+        "wincycle vesktop && " // switch to vesktop
         "xdotool type :sob: && " // type sob
         "xdotool sleep 0.1 key Return sleep 0.3 " // press enter and wait a bit
         "keydown Alt key Tab sleep 0.1 keyup Alt", NULL } }, // alt+tab back
