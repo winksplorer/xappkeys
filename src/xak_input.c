@@ -21,7 +21,7 @@ int xak_input_init(void) {
         return -1;
     }
 
-    // "grab" the device so only we get it's data
+    // "grab" the device so only we get its data
     if (ioctl(input_fd, EVIOCGRAB, 1) == -1) {
         perror("ioctl");
         close(input_fd);
@@ -58,19 +58,6 @@ int xak_input_handle(KeyBinding binds[], int num_binds) {
                 perror("setsid");
                 _exit(1);
             }
-
-            #if XAK_EXPECT_ROOT
-            // drop privileges
-            if (setgid(XAK_TARGET_GID) || setuid(XAK_TARGET_UID)) {
-                perror("setgid/setuid");
-                _exit(1);
-            }
-
-            // final setup
-            setenv("USER", XAK_TARGET_USER, 1);
-            setenv("LOGNAME", XAK_TARGET_USER, 1);
-            setenv("HOME", XAK_TARGET_HOME, 1);
-            #endif
 
             xak_x11_child_close();
             xak_input_child_close();

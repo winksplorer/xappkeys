@@ -24,17 +24,9 @@ typedef struct {
 } WindowBind;
 // ------
 
-// HIGHLY recommended to not have root
-#define XAK_EXPECT_ROOT 0
 
 // what device to read from
 #define XAK_INPUT_DEVICE_PATH "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"
-
-// launched application details (not required if XAK_EXPECT_ROOT is 0)
-#define XAK_TARGET_GID 1000
-#define XAK_TARGET_UID 1000
-#define XAK_TARGET_USER "wink"
-#define XAK_TARGET_HOME "/home/wink"
 
 // custom macros, not required
 #define WINCYCLE(name) (char*[]){ "wincycle", name, NULL }

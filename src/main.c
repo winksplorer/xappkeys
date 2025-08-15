@@ -42,8 +42,8 @@ int main(void)
 
     // setup vars
     KeyBinding active_binds[256];
-    int num_active_binds = window_binds[0].num_bindings, // the total amount of binds that work rn
-        num_global_binds = window_binds[0].num_bindings; // how many active binds are NOT window-specific
+    int num_global_binds = window_binds[0].num_bindings, // the total amount of binds that work rn
+        num_active_binds = num_global_binds; // how many active binds are NOT window-specific
 
     // copy global binds
     for (int i = 0; i < num_global_binds; ++i) active_binds[i] = window_binds[0].bindings[i];
