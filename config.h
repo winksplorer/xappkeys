@@ -33,8 +33,8 @@ typedef struct {
 
 // bindings that will be active across any window
 static const KeyBinding global_bindings[] = {
-    // dot = screensaver
-    { KEY_KPDOT, KEY_RELEASED, (char*[]){ "xscreensaver-command", "-activate", NULL } },
+    // dot = turn monitors off
+    { KEY_KPDOT, KEY_RELEASED, (char*[]){ "xset", "dpms", "force", "off", NULL } },
 
     // 0 = alacritty
     { KEY_KP0, KEY_PRESSED, WINCYCLE("alacritty") },
