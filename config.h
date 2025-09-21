@@ -60,15 +60,11 @@ static const KeyBinding global_bindings[] = {
     // 7 = chromium
     { KEY_KP7, KEY_PRESSED, WINCYCLE("chromium") },
 
-    // 8 = freetube
-    { KEY_KP8, KEY_PRESSED, WINCYCLE("freetube") },
+    // 8 = jellyfin. chromium WHY
+    { KEY_KP8, KEY_PRESSED, (char*[]){"sh", "-c", "wincycle jellyfinmediaplayer", NULL} },
 
-    // 9 = vesktop + type ":sob:" + alt-tab
-    { KEY_KP9, KEY_PRESSED, (char*[]){ "/bin/sh", "-c", 
-        "wincycle vesktop && " // switch to vesktop
-        "xdotool type :sob: && " // type sob
-        "xdotool sleep 0.1 key Return sleep 0.3 " // press enter and wait a bit
-        "keydown Alt key Tab sleep 0.1 keyup Alt", NULL } }, // alt+tab back
+    // 9 = bitwarden
+    { KEY_KP9, KEY_PRESSED, WINCYCLE("bitwarden") }
 };
 
 
