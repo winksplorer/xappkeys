@@ -3,10 +3,8 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/input.h>
-
-#if XAK_EXPECT_ROOT
-#include <stdlib.h>
-#endif
+#include <linux/prctl.h>
+#include <sys/prctl.h>
 
 #include "xak_input.h"
 #include "xak_x11.h"
@@ -40,18 +38,13 @@ int xak_input_handle(KeyBinding binds[], int num_binds) {
     
     for (int i = 0; i < num_binds; ++i) {
         if (binds[i].keycode == ev.code && ev.value == binds[i].state) {
-            // first fork
+            // fork
             pid_t child = fork();
-            if (child == -1) perror("fork");
-            else if (child) return 0;
-
-            // second fork
-            pid_t child2 = fork();
-            if (child2 == -1) {
+            if (child == -1) {
                 perror("fork");
                 _exit(1);
             }
-            else if (child2) _exit(0);
+            else if (child) return 0;
 
             // detatch terminal
             if (setsid() == -1) {

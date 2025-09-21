@@ -54,8 +54,8 @@ static const KeyBinding global_bindings[] = {
     // 5 = thunar
     { KEY_KP5, KEY_PRESSED, WINCYCLE("thunar") },
 
-    // 6 = qutebrowser
-    { KEY_KP6, KEY_PRESSED, WINCYCLE("qutebrowser") },
+    // 6 = qutebrowser. fuck you qutebrowser
+    { KEY_KP6, KEY_PRESSED, (char*[]){"sh", "-c", "wincycle qutebrowser", NULL} },
 
     // 7 = chromium
     { KEY_KP7, KEY_PRESSED, WINCYCLE("chromium") },
