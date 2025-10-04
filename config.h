@@ -92,26 +92,13 @@ static const KeyBinding alacritty_bindings[] = {
     { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type clear; xdotool key Return", NULL } },
 };
 
-// bindings for qutebrowser
-static const KeyBinding qutebrowser_bindings[] = {
-    // enter = open -t
-    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "xdotool", "key", "O", NULL } },
-
-    // plus = forward
-    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "L", NULL } },
-
-    // minus = back
-    { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "H", NULL } },
-};
-
 // list of bindings for each window class
 // first argument = "firefox" means these bindings will only be active when firefox is the currently focused window
 // get the first argument by running xprop on your desired window and use the value of WM_CLASS(STRING)
 static const WindowBind window_binds[] = {
     { NULL, ARR_SZ(global_bindings), global_bindings }, // make sure this is first
     { "VSCodium", ARR_SZ(vscodium_bindings), vscodium_bindings },
-    { "Alacritty", ARR_SZ(alacritty_bindings), alacritty_bindings },
-    { "qutebrowser", ARR_SZ(qutebrowser_bindings), qutebrowser_bindings }
+    { "Alacritty", ARR_SZ(alacritty_bindings), alacritty_bindings }
 };
 
 #endif
