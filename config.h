@@ -70,11 +70,11 @@ static const KeyBinding global_bindings[] = {
 
 // bindings for vscodium
 static const KeyBinding vscodium_bindings[] = {
-    // enter = search by function
-    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "at", NULL } },
+    // enter = search by file
+    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", NULL } },
 
-    // plus = search by file
-    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", NULL } },
+    // plus = search by function
+    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "at", NULL } },
 
     // minus = go to line
     { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "colon", NULL } },
