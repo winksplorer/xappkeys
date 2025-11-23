@@ -30,6 +30,7 @@ typedef struct {
 
 // custom macros, not required
 #define WINCYCLE(name) (char*[]){ "wincycle", name, NULL }
+#define WINCYCLE_PROGRAM(name, program) (char*[]){ "wincycle", name, program, NULL }
 
 // bindings that will be active across any window
 static const KeyBinding global_bindings[] = {
@@ -40,10 +41,10 @@ static const KeyBinding global_bindings[] = {
     { KEY_KP0, KEY_PRESSED, WINCYCLE("alacritty") },
 
     // 1 = apple music via weston
-    { KEY_KP1, KEY_PRESSED, WINCYCLE("weston") },
+    { KEY_KP1, KEY_PRESSED, WINCYCLE_PROGRAM("weston", "waydroid-session") },
 
     // 2 = codium
-    { KEY_KP2, KEY_PRESSED, WINCYCLE("codium") },
+    { KEY_KP2, KEY_PRESSED, WINCYCLE_PROGRAM("vscodium", "codium") },
 
     // 3 = vesktop
     { KEY_KP3, KEY_PRESSED, WINCYCLE("vesktop") },
@@ -54,8 +55,8 @@ static const KeyBinding global_bindings[] = {
     // 5 = thunar
     { KEY_KP5, KEY_PRESSED, WINCYCLE("thunar") },
 
-    // 6 = qutebrowser. fuck you qutebrowser
-    { KEY_KP6, KEY_PRESSED, WINCYCLE("thorium-browser") },
+    // 6 = librewolf
+    { KEY_KP6, KEY_PRESSED, WINCYCLE("librewolf") },
 
     // 7 = chromium
     { KEY_KP7, KEY_PRESSED, WINCYCLE("chromium") },
