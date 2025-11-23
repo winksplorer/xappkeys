@@ -40,7 +40,7 @@ static const KeyBinding global_bindings[] = {
     // 0 = alacritty
     { KEY_KP0, KEY_PRESSED, WINCYCLE("alacritty") },
 
-    // 1 = apple music via weston
+    // 1 = apple music via weston/waydroid
     { KEY_KP1, KEY_PRESSED, WINCYCLE_PROGRAM("weston", "waydroid-session") },
 
     // 2 = codium
@@ -61,8 +61,8 @@ static const KeyBinding global_bindings[] = {
     // 7 = chromium
     { KEY_KP7, KEY_PRESSED, WINCYCLE("chromium") },
 
-    // 8 = jellyfin. chromium WHY
-    { KEY_KP8, KEY_PRESSED, (char*[]){"sh", "-c", "wincycle jellyfinmediaplayer", NULL} },
+    // 8 = freetube
+    { KEY_KP8, KEY_PRESSED, WINCYCLE("freetube") },
 
     // 9 = bitwarden
     { KEY_KP9, KEY_PRESSED, WINCYCLE("bitwarden") }
