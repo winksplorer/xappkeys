@@ -16,7 +16,7 @@ Build and install xappkeys.
 
 ```sh
 doas apt install clang libx11-dev git && \
-    git clone https://github.com/winksplorer/xappkeys && \
+    git clone https://github.com/prescott2m/xappkeys && \
     doas make all install
 ```
 
