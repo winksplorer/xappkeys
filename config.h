@@ -41,7 +41,7 @@ static const KeyBinding global_bindings[] = {
     { KEY_KP0, KEY_PRESSED, WINCYCLE("alacritty") },
 
     // 1 = apple music via weston/waydroid
-    { KEY_KP1, KEY_PRESSED, WINCYCLE_PROGRAM("weston", "waydroid-session") },
+    { KEY_KP1, KEY_PRESSED, WINCYCLE_PROGRAM("weston compositor", "waydroid-session") },
 
     // 2 = codium
     { KEY_KP2, KEY_PRESSED, WINCYCLE_PROGRAM("vscodium", "codium") },
