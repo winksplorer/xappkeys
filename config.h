@@ -38,7 +38,7 @@ static const KeyBinding global_bindings[] = {
     { KEY_KPDOT, KEY_RELEASED, (char*[]){ "xset", "dpms", "force", "off", NULL } },
 
     // 0 = alacritty
-    { KEY_KP0, KEY_PRESSED, WINCYCLE("alacritty") },
+    { KEY_KP0, KEY_PRESSED, WINCYCLE_PROGRAM("st-256color", "st") },
 
     // 1 = apple music via weston/waydroid
     { KEY_KP1, KEY_PRESSED, WINCYCLE_PROGRAM("weston compositor", "waydroid-session") },
@@ -79,10 +79,13 @@ static const KeyBinding vscodium_bindings[] = {
 
     // minus = go to line
     { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "colon", NULL } },
+
+    // backspace = if err != nil { return err }
+    { KEY_BACKSPACE, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type \"if err != nil { return err }\"; xdotool key Return", NULL} },
 };
 
-// bindings for alacritty
-static const KeyBinding alacritty_bindings[] = {
+// bindings for st
+static const KeyBinding st_bindings[] = {
     // enter = make clean && make
     { KEY_KPENTER, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type \"make clean && make\"; xdotool key Return", NULL } },
 
@@ -99,7 +102,7 @@ static const KeyBinding alacritty_bindings[] = {
 static const WindowBind window_binds[] = {
     { NULL, ARR_SZ(global_bindings), global_bindings }, // make sure this is first
     { "VSCodium", ARR_SZ(vscodium_bindings), vscodium_bindings },
-    { "Alacritty", ARR_SZ(alacritty_bindings), alacritty_bindings }
+    { "st-256color", ARR_SZ(st_bindings), st_bindings }
 };
 
 #endif
