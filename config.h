@@ -1,108 +1,81 @@
-#ifndef XAK_CONFIG_H
-#define XAK_CONFIG_H
+/* xappkeys - intercepting per-app macro daemon */
+/* See LICENSE file for copyright and license details. */
 
-// note: this is my actual config
+/* Note: This is my actual config */
 
-// ------ do not touch
+#define WINCYCLE(name) (char*[]){ "wincycle", name, NULL }
+#define WINCYCLE_PROGRAM(name, program) (char*[]){ "wincycle", name, program, NULL }
+
+/* ------ not configuration */
 #include <stddef.h>
 #include <linux/input-event-codes.h>
 
-#define ARR_SZ(arr) (sizeof(arr) / sizeof((arr)[0]))
-#define KEY_RELEASED 0
-#define KEY_PRESSED 1
+#define LEN(a) (sizeof(a) / sizeof(a)[0])
+enum {
+    KEYUP = 0,
+    KEYDOWN = 1
+};
 
 typedef struct {
     int keycode;
     int state;
-    char* const* argv;
-} KeyBinding;
+    char *const *argv;
+} Macro;
 
 typedef struct {
-    const char* xclass;
-    const int num_bindings;
-    const KeyBinding* bindings;
+    const char *xclass;
+    const unsigned char num_macros;
+    const Macro *macros;
 } WindowBind;
-// ------
+/* ------ */
 
+/* your macro pad goes here */
+#define INPUT_DEVICE_PATH \
+    "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"
 
-// what device to read from
-#define XAK_INPUT_DEVICE_PATH "/dev/input/by-id/usb-2dc8_8BitDo_Retro_18_Numpad_24F218A7BC-if01-event-kbd"
-
-// custom macros, not required
-#define WINCYCLE(name) (char*[]){ "wincycle", name, NULL }
-#define WINCYCLE_PROGRAM(name, program) (char*[]){ "wincycle", name, program, NULL }
-
-// bindings that will be active across any window
-static const KeyBinding global_bindings[] = {
-    // dot = turn monitors off
-    { KEY_KPDOT, KEY_RELEASED, (char*[]){ "xset", "dpms", "force", "off", NULL } },
-
-    // 0 = alacritty
-    { KEY_KP0, KEY_PRESSED, WINCYCLE_PROGRAM("st-256color", "st") },
-
-    // 1 = apple music via weston/waydroid
-    { KEY_KP1, KEY_PRESSED, WINCYCLE_PROGRAM("weston compositor", "waydroid-session") },
-
-    // 2 = codium
-    { KEY_KP2, KEY_PRESSED, WINCYCLE_PROGRAM("vscodium", "codium") },
-
-    // 3 = vesktop
-    { KEY_KP3, KEY_PRESSED, WINCYCLE("vesktop") },
-
-    // 4 = steam
-    { KEY_KP4, KEY_PRESSED, WINCYCLE("steam") },
-
-    // 5 = thunar
-    { KEY_KP5, KEY_PRESSED, WINCYCLE("thunar") },
-
-    // 6 = librewolf
-    { KEY_KP6, KEY_PRESSED, WINCYCLE("librewolf") },
-
-    // 7 = chromium
-    { KEY_KP7, KEY_PRESSED, WINCYCLE("chromium") },
-
-    // 8 = freetube
-    { KEY_KP8, KEY_PRESSED, WINCYCLE("freetube") },
-
-    // 9 = bitwarden
-    { KEY_KP9, KEY_PRESSED, WINCYCLE("bitwarden") }
+/* macros that will be active across any window */
+static const Macro global_macros[] = {
+    { KEY_KPDOT, KEYUP, (char*[]){ "xset", "dpms", "force", "off", NULL } },
+    { KEY_KP0, KEYDOWN, WINCYCLE_PROGRAM("st-256color", "st") },
+    { KEY_KP1, KEYDOWN, WINCYCLE_PROGRAM("weston compositor", "waydroid-session") },
+    { KEY_KP2, KEYDOWN, WINCYCLE_PROGRAM("vscodium", "codium") },
+    { KEY_KP3, KEYDOWN, WINCYCLE("vesktop") },
+    { KEY_KP4, KEYDOWN, WINCYCLE("steam") },
+    { KEY_KP5, KEYDOWN, WINCYCLE("thunar") },
+    { KEY_KP6, KEYDOWN, WINCYCLE("librewolf") },
+    { KEY_KP7, KEYDOWN, WINCYCLE("chromium") },
+    { KEY_KP8, KEYDOWN, WINCYCLE("freetube") },
+    { KEY_KP9, KEYDOWN, WINCYCLE("bitwarden") }
 };
 
+static const Macro vscodium_macros[] = {
+    /* enter = search by file */
+    { KEY_KPENTER, KEYUP, (char*[]){ "xdotool", "key", "Control_L+p", NULL } },
 
-// bindings for vscodium
-static const KeyBinding vscodium_bindings[] = {
-    // enter = search by file
-    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", NULL } },
+    /* plus = search by function */
+    { KEY_KPPLUS, KEYUP, (char*[]){ "xdotool", "key", "Control_L+p", "key", "at", NULL } },
 
-    // plus = search by function
-    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "at", NULL } },
+    /* minus = go to line */
+    { KEY_KPMINUS, KEYUP, (char*[]){ "xdotool", "key", "Control_L+p", "key", "colon", NULL } },
 
-    // minus = go to line
-    { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "xdotool", "key", "Control_L+p", "key", "colon", NULL } },
-
-    // backspace = if err != nil { return err }
-    { KEY_BACKSPACE, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type \"if err != nil { return err }\"; xdotool key Return", NULL} },
+    /* backspace = if err != nil { return err } */
+    { KEY_BACKSPACE, KEYUP, (char*[]){ "/bin/sh", "-c", "xdotool type \"if err != nil { return err }\"; xdotool key Return", NULL} },
 };
 
-// bindings for st
-static const KeyBinding st_bindings[] = {
-    // enter = make clean && make
-    { KEY_KPENTER, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type \"make clean && make\"; xdotool key Return", NULL } },
+static const Macro st_macros[] = {
+    /* enter = make clean && make */
+    { KEY_KPENTER, KEYUP, (char*[]){ "/bin/sh", "-c", "xdotool type \"make clean && make\"; xdotool key Return", NULL } },
 
-    // plus = doas apt install
-    { KEY_KPPLUS, KEY_RELEASED, (char*[]){ "xdotool", "type", "doas apt install ", NULL } },
+    /* plus = doas apt install */
+    { KEY_KPPLUS, KEYUP, (char*[]){ "xdotool", "type", "doas apt install ", NULL } },
 
-    // minus = clear
-    { KEY_KPMINUS, KEY_RELEASED, (char*[]){ "/bin/sh", "-c", "xdotool type clear; xdotool key Return", NULL } },
+    /* minus = clear */
+    { KEY_KPMINUS, KEYUP, (char*[]){ "xdotool", "key", "Control_L+l", NULL } },
 };
 
-// list of bindings for each window class
-// first argument = "firefox" means these bindings will only be active when firefox is the currently focused window
-// get the first argument by running xprop on your desired window and use the value of WM_CLASS(STRING)
+/* main macro list. xclass is the WM_CLASS of an X window. */
 static const WindowBind window_binds[] = {
-    { NULL, ARR_SZ(global_bindings), global_bindings }, // make sure this is first
-    { "VSCodium", ARR_SZ(vscodium_bindings), vscodium_bindings },
-    { "st-256color", ARR_SZ(st_bindings), st_bindings }
+    { NULL, LEN(global_macros), global_macros }, /* globals always are first */
+    { "VSCodium", LEN(vscodium_macros), vscodium_macros },
+    { "st-256color", LEN(st_macros), st_macros }
 };
-
-#endif

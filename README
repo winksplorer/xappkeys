@@ -1,0 +1,20 @@
+xappkeys - intercepting per-app macro daemon
+============================================
+xappkeys is a macro keybinding tool that intercepts an evdev device. It uses X
+in order to have window-specific macros.
+
+Requirements
+------------
+xappkeys requires Xlib and the Linux header files.
+
+Setup
+-----
+Add yourself to the input group *and relogin*:
+
+    usermod -aG input $USER
+
+Then edit config.mk to match your local setup and config.h to add your macros.
+
+Finally build and install xappkeys:
+
+    make clean install
