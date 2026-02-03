@@ -37,7 +37,7 @@ typedef struct {
 static const Macro global_macros[] = {
     { KEY_KPDOT, KEYUP, (char*[]){ "xset", "dpms", "force", "off", NULL } },
     { KEY_KP0, KEYDOWN, WINCYCLE_PROGRAM("st-256color", "st") },
-    { KEY_KP1, KEYDOWN, WINCYCLE_PROGRAM("weston compositor", "waydroid-session") },
+    { KEY_KP1, KEYDOWN, WINCYCLE("spotify") },
     { KEY_KP2, KEYDOWN, WINCYCLE_PROGRAM("vscodium", "codium") },
     { KEY_KP3, KEYDOWN, WINCYCLE("vesktop") },
     { KEY_KP4, KEYDOWN, WINCYCLE("steam") },
